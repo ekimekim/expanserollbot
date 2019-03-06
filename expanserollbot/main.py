@@ -44,19 +44,23 @@ async def roll(message):
 async def test(message):
 	"""Does a standard 3d6 + bonus ability test, identifying the drama die and stunt doubles."""
 	body = ' '.join(message.content.split(' ')[1:])
-	try:
-		bonus = int(body)
-	except ValueError:
-		await reply(message, "I don't understand. Syntax: !test <bonus or penalty>, eg. !test -1")
-		return
+	if body:
+		try:
+			bonus = int(body)
+		except ValueError:
+			await reply(message, "I don't understand. Syntax: !test <bonus or penalty>, eg. !test -1")
+			return
+	else:
+		bonus = 0
 	# last roll is drama die
 	rolls = [random.randint(1, 6) for _ in range(3)]
 	result = sum(rolls) + bonus
 	drama = rolls[-1]
 	stunt = max(Counter(rolls).values()) > 1
 	# formatting
-	main_response = "*{r[0]}* + *{r[1]}* + __*{r[2]}*__ + {bonus} = **{result}**".format(
-		r=rolls, bonus=bonus, result=result,
+	main_response = "*{r[0]}* + *{r[1]}* + __*{r[2]}*__{bonus} = **{result}**".format(
+		r=rolls, result=result,
+		bonus = ' + {}'.format(bonus) if bonus else '',
 	)
 	if stunt:
 		full_response = "Stunt! {} and you can spend {} SP".format(main_response, drama)

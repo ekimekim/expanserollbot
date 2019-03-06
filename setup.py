@@ -9,5 +9,7 @@ setup(
 	packages=find_packages(),
 	install_requires=[
 		'argh',
+		'discord.py',
+		'pyhedrals',
 	],
 )

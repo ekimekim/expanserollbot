@@ -11,6 +11,23 @@ client = discord.Client()
 dispatch = {}
 roller = pyhedrals.DiceRoller()
 
+RED_DICE = [
+	"<:diered1:552828733430693898>",
+	"<:diered2:552828733354934278>",
+	"<:diered3:552828733451403265>",
+	"<:diered4:552828733594271792>",
+	"<:diered5:552828733782884362>",
+	"<:diered6:552828733787078656>",
+]
+
+PURPLE_DICE = [
+	"<:diepurple1:552828732998418459>",
+	"<:diepurple2:552828733841473536>",
+	"<:diepurple3:552828734311497748>",
+	"<:diepurple4:552828733426237441>",
+	"<:diepurple5:552828733036167190>",
+	"<:diepurple6:552828733485219840>",
+]
 
 def register(fn):
 	dispatch[fn.__name__] = fn
@@ -55,11 +72,13 @@ async def test(message):
 	# last roll is drama die
 	rolls = [random.randint(1, 6) for _ in range(3)]
 	result = sum(rolls) + bonus
-	drama = rolls[-1]
+	roll1, roll2, drama = rolls
 	stunt = max(Counter(rolls).values()) > 1
 	# formatting
-	main_response = "*{r[0]}* + *{r[1]}* + __*{r[2]}*__{bonus} = **{result}**".format(
-		r=rolls, result=result,
+	
+	main_response = "{r[0]} + {r[1]} + {r[2]}{bonus} = **{result}**".format(
+		r=[RED_DICE[roll1-1], RED_DICE[roll2-1], PURPLE_DICE[drama-1]],
+		result=result,
 		bonus = ' + {}'.format(bonus) if bonus else '',
 	)
 	if stunt:

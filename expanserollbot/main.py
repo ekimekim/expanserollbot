@@ -1,9 +1,11 @@
 
+import logging
+
 import discord
 import pyhedrals
 
 
-client = discord.client()
+client = discord.Client()
 dispatch = {}
 roller = pyhedrals.DiceRoller()
 
@@ -33,15 +35,17 @@ async def roll(message):
 	roll_strings = ' | '.join(roller.getRollStrings())
 	if len(roll_strings) > 200:
 		roll_strings = "lots of dice"
-	await reply(message, "{m.author.name} rolled {}: [{}] {}", body, roll_strings, result, m=message)
+	await reply(message, "{m.author.name} rolled {}: [{}] = {}", body, roll_strings, result, m=message)
 
 
 @client.event
 async def on_message(message):
+	logging.debug("Got message: {}".format(message.content))
 	if not message.content:
 		return
-	command = message.content.split()[0]
+	command = message.content.split()[0].lstrip('!')
 	if command in dispatch:
+		logging.debug("Dispatching to {}".format(dispatch[command]))
 		await dispatch[command](message)
 
 

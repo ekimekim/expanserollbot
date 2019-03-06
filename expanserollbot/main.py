@@ -88,6 +88,32 @@ async def test(message):
 	await reply(message, "{}: {}", message.author.name, full_response)
 
 
+@register
+async def abilities(message):
+	names = 'Acc', 'Con', 'Fight', 'Comm', 'Dex', 'Int', 'Per', 'Str', 'Will'
+	lut = {
+		3: -2,
+		4: -1,
+		5: -1,
+		6: 0,
+		7: 0,
+		8: 0,
+		9: 1,
+		10: 1,
+		11: 1,
+		12: 2,
+		13: 2,
+		14: 2,
+		15: 3,
+		16: 3,
+		17: 3,
+		18: 4,
+	}
+	values = [sum(random.randint(1, 6) for _ in range(3)) for _ in names]
+	output = ", ".join("{}: {} (rolled {})".format(n, lut[v], v) for n, v in zip(names, values))
+	await reply(message, "{}: {}", message.author.name, output)
+
+
 @client.event
 async def on_message(message):
 	logging.debug("Got message: {}".format(message.content))

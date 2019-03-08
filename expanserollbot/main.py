@@ -125,5 +125,7 @@ async def on_message(message):
 		await dispatch[command](message)
 
 
-def main(token):
+def main(tokenpath):
+	with open(tokenpath) as f:
+		token = f.read().strip()
 	client.run(token)

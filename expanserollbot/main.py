@@ -54,6 +54,10 @@ async def roll(message):
 	roll_strings = ' | '.join(roller.getRollStrings())
 	if len(roll_strings) > 200:
 		roll_strings = "lots of dice"
+	result = str(result)
+	if len(result) > 100:
+		await reply(message, "Wow. That's a big number. You must be very proud.")
+		return
 	await reply(message, "{m.author.name} rolled {}: [{}] = {}", body, roll_strings, result, m=message)
 
 

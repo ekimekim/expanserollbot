@@ -42,6 +42,19 @@ async def reply(message, fmt, *args, **kwargs):
 async def ping(message):
 	await reply(message, 'pong')
 
+churn_counter = 0
+
+@register
+async def churn(message):
+	global churn_counter
+	churn_counter += 1
+	await reply(message, 'Churn counter increased to {}'.format(churn_counter))
+
+@register
+async def churn_reset(message):
+	global churn_counter
+	churn_counter = 0
+	await reply(message, "Churn reset.")
 
 @register
 async def roll(message):
